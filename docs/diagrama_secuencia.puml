@@ -1,0 +1,19 @@
+@startuml
+actor Operador
+participant GestorIncidentes
+participant Repositorio
+participant Incidente
+participant BusEventos
+participant Observador
+Operador -> GestorIncidentes: asignar(id, equipo)
+GestorIncidentes -> Repositorio: obtener(id)
+Repositorio --> GestorIncidentes: incidente
+GestorIncidentes -> Incidente: asignar(equipo)
+Incidente -> Incidente: validar especialidad y estado
+GestorIncidentes -> Repositorio: guardar(incidente)
+GestorIncidentes -> Incidente: extraer_eventos()
+GestorIncidentes -> BusEventos: publicar(eventos)
+BusEventos -> Observador: actualizar(evento)
+GestorIncidentes --> Operador: incidente ASIGNADO
+@enduml
+

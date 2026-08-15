@@ -1,0 +1,56 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+package domain {
+  class Incidente {
+    -id: UUID
+    -titulo: str
+    -estado: EstadoIncidente
+    +asignar(equipo)
+    +iniciar_diagnostico()
+    +resolver(causa)
+    +cerrar()
+  }
+  class Servicio
+  class Equipo
+  abstract EstadoIncidente
+  class Reportado
+  class Asignado
+  class EnDiagnostico
+  class Resuelto
+  class Cerrado
+  interface EstrategiaPriorizacion
+  class PriorizacionPorRiesgo
+  class FabricaIncidentes
+}
+package application {
+  class GestorIncidentes
+  class BusEventos
+  interface RepositorioIncidentes
+  interface ObservadorEventos
+}
+package infrastructure {
+  class RepositorioIncidentesMemoria
+  class NotificadorConsola
+  class AuditoriaMemoria
+  class ConfiguracionSLA <<Singleton>>
+}
+Incidente *-- Servicio
+Incidente o-- Equipo
+Incidente *-- EstadoIncidente
+EstadoIncidente <|-- Reportado
+EstadoIncidente <|-- Asignado
+EstadoIncidente <|-- EnDiagnostico
+EstadoIncidente <|-- Resuelto
+EstadoIncidente <|-- Cerrado
+EstrategiaPriorizacion <|.. PriorizacionPorRiesgo
+FabricaIncidentes --> EstrategiaPriorizacion
+GestorIncidentes --> FabricaIncidentes
+GestorIncidentes --> RepositorioIncidentes
+GestorIncidentes --> BusEventos
+RepositorioIncidentes <|.. RepositorioIncidentesMemoria
+ObservadorEventos <|.. NotificadorConsola
+ObservadorEventos <|.. AuditoriaMemoria
+BusEventos o-- ObservadorEventos
+@enduml
+
