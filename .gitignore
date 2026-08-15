@@ -11,4 +11,4 @@ htmlcov/
 node_modules/
 qa_*/
 *.inspect.ndjson
-.DS_Store
+.DS_Store*.egg-info/
