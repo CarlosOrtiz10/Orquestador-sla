@@ -1,0 +1,14 @@
+digraph Sequence {
+  graph [rankdir=LR, bgcolor="white", pad=0.2, nodesep=0.35, ranksep=0.4, fontname="Arial"];
+  node [shape=box, style="rounded,filled", fillcolor="#F5F8FC", color="#315B7D", fontname="Arial", fontsize=10];
+  edge [color="#315B7D", fontname="Arial", fontsize=9, arrowsize=0.7];
+  Operador -> Gestor [label="1. asignar(id, equipo)"];
+  Gestor -> Repo [label="2. obtener(id)"];
+  Repo -> Gestor [label="3. incidente", style=dashed];
+  Gestor -> Incidente [label="4. asignar(equipo)"];
+  Incidente -> Incidente [label="5. validar estado/especialidad"];
+  Gestor -> Repo [label="6. guardar(incidente)"];
+  Gestor -> Bus [label="7. publicar(evento)"];
+  Bus -> Observador [label="8. actualizar(evento)"];
+}
+

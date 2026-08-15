@@ -1,0 +1,29 @@
+digraph UML {
+  graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.35, ranksep=0.55, fontname="Arial"];
+  node [shape=record, style="rounded,filled", fillcolor="#F5F8FC", color="#315B7D", fontname="Arial", fontsize=10];
+  edge [color="#607D8B", fontname="Arial", fontsize=8, arrowsize=0.7];
+  Incidente [label="{Incidente|− id: UUID\l− estado: EstadoIncidente\l− equipo: Equipo?\l|+ asignar()\l+ iniciar_diagnostico()\l+ resolver()\l+ cerrar()\l}"];
+  Servicio [label="{Servicio|+ codigo: str\l+ critico: bool\l}"];
+  Equipo [label="{Equipo|+ especialidades: set\l|+ puede_atender()\l}"];
+  Estado [label="{«abstract» EstadoIncidente|+ asignar()\l+ iniciar()\l+ resolver()\l+ cerrar()\l}"];
+  Estados [label="{Estados concretos|Reportado\lAsignado\lEnDiagnostico\lResuelto\lCerrado\l}", fillcolor="#E8F0F7"];
+  Estrategia [label="{«interface» EstrategiaPriorizacion|+ calcular(): Prioridad\l}"];
+  Riesgo [label="{PriorizacionPorRiesgo|+ calcular(): Prioridad\l}"];
+  Fabrica [label="{FabricaIncidentes|− estrategia\l|+ crear(): Incidente\l}"];
+  Gestor [label="{GestorIncidentes|− fabrica\l− repositorio\l− bus\l|+ reportar()\l+ asignar()\l+ resolver()\l}", fillcolor="#EAF5EE", color="#357A50"];
+  Repo [label="{«interface» RepositorioIncidentes|+ guardar()\l+ obtener()\l}"];
+  RepoMem [label="{RepositorioIncidentesMemoria|− datos: dict\l}"];
+  Bus [label="{BusEventos|− observadores\l|+ suscribir()\l+ publicar()\l}"];
+  Obs [label="{«interface» ObservadorEventos|+ actualizar()\l}"];
+  Incidente -> Servicio [label=" composición", arrowhead=diamond];
+  Incidente -> Equipo [label=" asignación", arrowhead=odiamond];
+  Incidente -> Estado [label=" estado", arrowhead=diamond];
+  Estados -> Estado [arrowhead=empty, label=" hereda"];
+  Riesgo -> Estrategia [arrowhead=empty, style=dashed];
+  Fabrica -> Estrategia [label=" usa"];
+  Fabrica -> Incidente [label=" crea"];
+  Gestor -> Fabrica; Gestor -> Repo; Gestor -> Bus;
+  RepoMem -> Repo [arrowhead=empty, style=dashed];
+  Bus -> Obs [label=" notifica", arrowhead=odiamond];
+}
+
