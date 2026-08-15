@@ -1,0 +1,2 @@
+"""Modelo de dominio."""
+
